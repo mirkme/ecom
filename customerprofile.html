@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Profile</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: rgb(139, 247, 247);
+        }
+
+        .navbar {
+            background-color: #333;
+            color: #fff;
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+                .logo {
+            width: 120px;
+            text-align: center;
+        }
+
+        .logo img {
+            width: 100%;
+            height: auto;
+        }
+
+        .navbar-menu {
+            list-style-type: none;
+            display: flex;
+            margin: 0;
+            padding: 0;
+        }
+
+        .navbar-item {
+            margin-right: 20px;
+        }
+
+        .navbar-item a {
+            color: #fff;
+            text-decoration: none;
+        }
+
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #333;
+            min-width: 160px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+            z-index: 1;
+        }
+
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+
+        .dropdown-content a {
+            color: #fff;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+        }
+
+        .dropdown-content a:hover {
+            background-color: #555;
+        }
+
+        .navbar-search {
+            position: relative;
+        }
+
+        .navbar-search input[type="text"] {
+            width: 300px;
+            height: 30px;
+            padding: 5px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+        }
+
+        .search-button {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            background-color: #fff;
+            border: none;
+            padding: 5px;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+
+        .navbar-user {
+            display: flex;
+            align-items: center;
+        }
+
+        .navbar-profile,
+        .navbar-wishlist,
+        .navbar-bag {
+            margin-left: 20px;
+        }
+
+        .navbar-profile a,
+        .navbar-wishlist a,
+        .navbar-bag a {
+            color: #fff;
+            text-decoration: none;
+        }
+
+        .container {
+            width: 80%;
+            margin: 0 auto;
+        }
+
+        .profile-header {
+            text-align: center;
+            margin-top: 50px;
+        }
+
+        .profile-info {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 20px;
+        }
+
+        .profile-image {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            overflow: hidden;
+            margin-right: 20px;
+        }
+
+        .profile-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .user-details {
+            text-align: left;
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="navbar">
+        <div class="logo-bar">
+            <div class="logo">
+                <img src="hack_logo.JPEG" alt="Logo">
+            </div>
+        </div>
+        <ul class="navbar-menu">
+            <li class="navbar-item">
+                <div class="dropdown">
+                    <span>Men</span>
+                    <div class="dropdown-content">
+                        <a href="#">Ethnic Wear</a>
+                        <a href="#">Casual Wear</a>
+                        <a href="#">Formal Wear</a>
+                    </div>
+                </div>
+            </li>
+            <li class="navbar-item">
+                <div class="dropdown">
+                    <span>Women</span>
+                    <div class="dropdown-content">
+                        <a href="#">Ethnic Wear</a>
+                        <a href="#">Casual Wear</a>
+                        <a href="#">Formal Wear</a>
+                    </div>
+                </div>
+            </li>
+            <li class="navbar-item">
+                <div class="dropdown">
+                    <span>Kids</span>
+                    <div class="dropdown-content">
+                        <a href="#">Ethnic Wear</a>
+                        <a href="#">Casual Wear</a>
+                        <a href="#">Formal Wear</a>
+                    </div>
+                </div>
+            </li>
+        </ul>
+        <div class="navbar-search">
+            <input type="text" placeholder="Search for products, brands and more">
+            <button class="search-button">Q</button>
+        </div>
+        <div class="navbar-user">
+            <div class="navbar-profile">
+                <a href="#">Profile</a>
+            </div>
+            <div class="navbar-wishlist">
+                <a href="#">Wishlist</a>
+            </div>
+            <div class="navbar-bag">
+                <a href="#">Bag</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="profile-header">
+            <h1>User Profile</h1>
+        </div>
+        <div class="profile-info">
+            <div class="profile-image">
+                <img src="profile_picture.PNG" alt="User Avatar">
+            </div>
+            <div class="user-details">
+                <h2>Charuta Shelar</h2>
+                <p>Mobile: 9565624618</p>
+                <p>Email: charutashelar@gmail.com</p>
+                <p>Location: Vasco,Goa,India</p>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

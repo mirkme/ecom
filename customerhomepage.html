@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js" integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+" crossorigin="anonymous"></script>
+    <!-- Other scripts and styles may be present here -->
+    <title>bargain questers</title>
+        <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: rgb(139, 247, 247);
+        }
+
+        .img{
+            width:auto;
+            height:50px;
+        }
+
+        .navbar {
+            background-color: #333;
+            color: #fff;
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo-bar {
+            display: flex;
+            align-items: center;
+        }
+        
+
+        .navbar-search {
+            position: relative;
+        }
+
+        .navbar-search input[type="text"] {
+            width: 300px;
+            height: 30px;
+            padding: 5px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+        }
+
+        .search-button {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            background-color: #fff;
+            border: none;
+            padding: 5px;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+
+        .navbar-user {
+            display: flex;
+            align-items: center;
+        }
+
+        .navbar-profile,
+        .navbar-wishlist,
+        .navbar-bag {
+            margin-left: 20px;
+        }
+
+        .navbar-profile a,
+        .navbar-wishlist a,
+        .navbar-bag a {
+            color: #fff;
+            text-decoration: none;
+        }
+
+        .container {
+            width: 80%;
+            margin: 0 auto;
+        }
+
+    
+
+        .logo {
+            width: 120px;
+            text-align: center;
+        }
+
+        .logo img {
+            width: 100%;
+            height: auto;
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="navbar">
+        <div class="logo-bar">
+            <div class="logo">
+                <img src="hack_logo.JPEG" alt="Logo">
+            </div>
+        </div>
+        <div class="navbar-search">
+            <input type="text" placeholder="Search for products" aria-label="search for products" id="search" name="search"/>
+            <button type="button" class="search-button" onclick="searchProducts()">Q</button>
+        </div>
+        <div class="navbar-user">
+            <div class="navbar-profile">
+                <a href="hack_profile.html">Profile</a>
+            </div>
+            <div class="navbar-wishlist">
+                <a onclick="add1()">Wishlist</a>
+            </div>
+            <div class="navbar-bag">
+                <a onclick="add()">cart </a>
+            </div>
+
+            <div class="navbar-bag">
+                <a onclick="add2()">negotiate </a>
+            </div>
+            <div style="padding:20px ;"class="logout">
+            <a  onclick="logout()" > Logout</a>
+            </div>
+        </div>
+        </div>
+    </nav>
+    <div class="container">
+        <h1 id="Message" style="padding:20px;"></h1>
+        <div class="container" id="Container"></div>
+    </div>
+
+    <script type="text/javascript">
+
+        $.ajax({
+            url: 'extraction.php',
+            method: 'GET',
+            dataType: 'json',
+            success: function(data) {
+                displayProducts(data);
+            },
+            error: function(error) {
+                console.error('Error:', error);
+            }
+        });
+
+
+
+         function logout(){
+             window.location.href = 'logout.php';
+        }
+
+        function add(){
+            window.location.href= 'cart.html';
+        }
+
+
+        function add1(){
+            window.location.href='wishlist.html';
+        }
+
+
+        function add2(){
+            window.location.href='negotiate.html'
+        }
+
+        function displayProducts(data) {
+    const container = document.getElementById('Container');
+    
+    // Clear existing products in the container
+    container.innerHTML = '';
+
+    data.forEach(product => {
+        const productElement = document.createElement('div');
+        productElement.classList.add('product');
+
+        const nameElement = document.createElement('h2');
+        nameElement.textContent = product.productname;
+
+        const categoryElement = document.createElement('p');
+        categoryElement.textContent = 'Category: ' + product.productcategory;
+
+        const priceElement = document.createElement('p');
+        priceElement.textContent = 'Price: $' + product.productprice;
+
+        const quantityElement = document.createElement('p');
+        quantityElement.textContent = 'Quantity: ' + product.productquantity;
+
+        const productImage = document.createElement('img');
+        productImage.src = product.productlink;
+        productImage.alt = product.title;
+
+        const addToCartButton = document.createElement('button');
+        addToCartButton.textContent = 'Add to Cart';
+        addToCartButton.addEventListener('click', () => addToCart(product));
+
+        const addTowishlistButton = document.createElement('button');
+        addTowishlistButton.textContent = 'Add to wishlist';
+        addTowishlistButton.addEventListener('click', () => addTowishlist(product));
+
+        const addTonegotiateButton = document.createElement('button');
+        addTonegotiateButton.textContent = 'Make an offer';
+        addTonegotiateButton.addEventListener('click', () => addTonegotiate(product));
+
+        productElement.appendChild(productImage);
+        productElement.appendChild(nameElement);
+        productElement.appendChild(categoryElement);
+        productElement.appendChild(priceElement);
+        productElement.appendChild(quantityElement);
+        productElement.appendChild(addToCartButton);
+        productElement.appendChild(addTowishlistButton);
+        productElement.appendChild(addTonegotiateButton);
+
+        container.appendChild(productElement);
+    });
+}
+
+
+        // Fetch data from the server
+        async function fetchProducts() {
+            try {
+                const response = await fetch('extraction.php');
+                const data = await response.json();
+
+                if (data && data.length > 0) {
+                    displayProducts(data);
+                } else {
+                    console.log('No products found.');
+                }
+            } catch (error) {
+                console.error('Error fetching products:', error);
+            }
+        }
+
+        // Call fetchProducts when the page loads
+        window.onload = function () {
+            fetchProducts();
+        };
+
+
+        async function searchProducts() {
+            var search = document.getElementById('search').value;
+            console.log('Extracted Data:', search);
+
+            try {
+                const response = await fetch('extraction.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ search: search }),
+                });
+
+                const data = await response.json();
+                console.log(data);
+
+                if (data && data.length > 0) {
+                    document.getElementById("Message").innerHTML = "Results for : " + search;
+                    var div1 = document.getElementById("Container");
+                    div1.innerHTML = "";
+                    displayProducts(data);
+                } else {
+                    console.log(data);
+                    document.getElementById("Message").innerHTML = "Results for : " + search + " Not Found!";
+                    var div1 = document.getElementById("Container");
+                    div1.innerHTML = "";
+                }
+            } catch (error) {
+                console.error("Error:", error);
+            }
+        }
+
+
+
+
+
+
+        function addTonegotiate(product) {
+            console.log('Adding to product for negotiation:', product);
+            fetch('check_session.php')
+                .then(response => response.json())
+                .then(data => {
+                    console.log('Session check response:', data);
+                    var customerusername = data.customerusername;
+                    if (data.activeSession) {
+                        // Assuming you have a function to add the product to the cart
+                        addProductTonegotiate(product);
+                    } else {
+                        console.log('User not logged in. Redirecting...');
+                        window.location.href = 'customerlogin.html';
+                        return;
+                    }
+                })
+                .catch(error => {
+                    console.error('Error checking session:', error);
+                });
+        }
+
+
+
+
+
+        function addProductTonegotiate(product) {
+            console.log('Adding product for negotiation:', product);
+            fetch('addtonegotiation.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(product),
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Add product for negotiation response:', data);
+                if (data.success) {
+                    alert('Product added for negotiation!');
+                    window.location.href='negotiate.html';
+                } else {
+                    alert('Failed to add product for negotiation.');
+                    window.location.href='customerhomepage.html';
+                }
+            })
+            .catch(error => {
+                console.error('Error adding product for negotiation:', error);
+            });
+        }
+
+        function addProductToCart(product) {
+            console.log('Adding product to cart:', product);
+            fetch('addtocart.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(product),
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Add to cart response:', data);
+                if (data.success) {
+                    alert('Product added to cart!');
+                    window.location.href='cart.html';
+                } else {
+                    alert('Failed to add product to cart.');
+                    window.location.href='customerhomepage.html';
+                }
+            })
+            .catch(error => {
+                console.error('Error adding to cart:', error);
+            });
+        }
+
+
+        
+        function addToCart(product) {
+            console.log('Adding to cart:', product);
+            fetch('check_session.php')
+                .then(response => response.json())
+                .then(data => {
+                    console.log('Session check response:', data);
+                    var customerusername = data.customerusername;
+                    if (data.activeSession) {
+                        // Assuming you have a function to add the product to the cart
+                        addProductToCart(product);
+                    } else {
+                        console.log('User not logged in. Redirecting...');
+                        window.location.href = 'customerlogin.html';
+                        return;
+                    }
+                })
+                .catch(error => {
+                    console.error('Error checking session:', error);
+                });
+        }
+
+        function addProductTowishlist(product) {
+            console.log('Adding product to wishlist:', product);
+            fetch('addtowishlist.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(product),
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Add to wishlist response:', data);
+                if (data.success) {
+                    alert('Product added to wishlist!');
+                    window.location.href='wishlist.html';
+                } else {
+                    alert('Failed to add product to wishlist.');
+                    window.location.href='customerhomepage.html';
+                }
+            })
+            .catch(error => {
+                console.error('Error adding to wishlist:', error);
+            });
+        }
+
+
+
+
+        function addTowishlist(product) {
+            console.log('Adding to wishlist:', product);
+            fetch('check_session.php')
+                .then(response => response.json())
+                .then(data => {
+                    console.log('Session check response:', data);
+                    var customerusername = data.customerusername;
+                    if (data.activeSession) {
+                        // Assuming you have a function to add the product to the cart
+                        addProductTowishlist(product);
+                    } else {
+                        console.log('User not logged in. Redirecting...');
+                        window.location.href = 'customerlogin.html';
+                        return;
+                    }
+                })
+                .catch(error => {
+                    console.error('Error checking session:', error);
+                });
+        }
+
+    </script>
+</body>
+
+</html>

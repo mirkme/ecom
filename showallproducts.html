@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Seller Home Page</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: rgb(139, 247, 247);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        table,
+        th,
+        td {
+            border: 1px solid #ddd;
+        }
+
+        th,
+        td {
+            padding: 15px;
+            text-align: left;
+        }
+    </style>
+</head>
+
+<body onload="display_products()">
+    <div class="register-container">
+        <h2>All Products</h2>
+
+        <form action="showallproducts.php" method="post">
+            
+        </form>
+
+        <table>
+            <tr>
+                <th>Product Name</th>
+                <th>Product Quantity</th>
+                <th>Product Price</th>
+                <th>Negotiable Amount</th>
+                <th>Product Category</th>
+                <th>Product Size</th>
+                <th>Product Colour</th>
+                <th>Product Image Link</th>
+            </tr>
+            <?php include 'showallproducts.php'; ?>
+        </table>
+    </div>
+
+    <script>
+        function display_products(){
+            $.ajax({
+                    url: 'showallproducts.php', // Replace 'showallproducts.php' with the path to your PHP script
+                    method: 'POST',
+                    dataType: 'html',
+                    success: function(response) {
+                        // Replace the table content with the fetched data
+                        $('table').find('tr:gt(0)').remove(); // Remove existing table rows except the header
+                        $('table').append(response); // Append the fetched data to the table
+                    },
+                    error: function(xhr, status, error) {
+                        console.error(xhr.responseText);
+                    }
+                });
+        }
+    </script>
+</body>
+
+</html>

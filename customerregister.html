@@ -1,0 +1,159 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: rgb(139, 247, 247);
+        }
+
+        .register-container {
+            width: 100%;
+            max-width: 400px;
+            margin: 50px auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .logo {
+            text-align: center;
+        }
+
+        .logo img {
+            width: 100px;
+            height: auto;
+        }
+
+        .register-form {
+            margin-top: 20px;
+        }
+
+        h2 {
+            margin-bottom: 10px;
+            color: #333;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        label {
+            margin-bottom: 5px;
+            color: #555;
+        }
+
+        input {
+            padding: 8px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+        }
+
+        button {
+            background-color: #4CAF50;
+            color: #fff;
+            padding: 10px;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        .error-message {
+            color: red;
+            margin-top: 5px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="register-container">
+        <div class="logo">
+            <img src="hack_logo.JPEG" alt="Logo">
+        </div>
+        <div class="register-form">
+            <h2>Customer Register</h2>
+            <form action="customerregister.php" method="post" onsubmit="return validateForm()">
+                <label for="name">Name:</label>
+                <input type="text" id="name" name="name" required>
+
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" required pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$">
+                <span class="error-message" id="emailError"></span>
+
+                <label for="username">user Name:</label>
+                <input type="text" id="username" name="username" required>
+
+
+                <label for="mobile">Mobile Number:</label>
+                <input type="tel" id="mobile" name="mobile" required pattern="[0-9]{10}">
+                <span class="error-message" id="mobileError"></span>
+
+                <label for="location">Location:</label>
+                <input type="text" id="location" name="location" required>
+
+                <label for="password">Create password:</label>
+                <input type="password" id="password" name="password" required>
+
+                <label for="confirmpassword">Confirm password:</label>
+                <input type="password" id="confirmpassword" name="confirmpassword" required>
+                <span class="error-message" id="passwordMatchError"></span>
+
+                <button type="submit" name="register">Register</button>
+                <input type="hidden" name="register" value="1">
+            </form>
+        </div>
+    </div>
+
+    <script>
+        function validateForm() {
+            var emailInput = document.getElementById('email');
+            var mobileInput = document.getElementById('mobile');
+            var emailError = document.getElementById('emailError');
+            var mobileError = document.getElementById('mobileError');
+            var passwordInput = document.getElementById('password');
+            var confirmPasswordInput = document.getElementById('confirmpassword');
+            var passwordMatchError = document.getElementById('passwordMatchError');
+
+            // Reset previous error messages
+            emailError.innerHTML = '';
+            mobileError.innerHTML = '';
+            passwordMatchError.innerHTML = '';
+
+            // Email validation
+            if (!emailInput.checkValidity()) {
+                emailError.innerHTML = 'Enter a valid email address.';
+                return false;
+            }
+
+            // Mobile number validation
+            if (!mobileInput.checkValidity()) {
+                mobileError.innerHTML = 'Enter a valid 10-digit mobile number.';
+                return false;
+            }
+
+            // Password matching
+            if (passwordInput.value !== confirmPasswordInput.value) {
+                passwordMatchError.innerHTML = 'Passwords do not match.';
+                return false;
+            }
+
+            return true;
+        }
+    </script>
+</body>
+
+</html>

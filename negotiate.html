@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js" integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+" crossorigin="anonymous"></script>
+    <!-- Other scripts and styles may be present here -->
+    <title>bargain questers</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: rgb(139, 247, 247);
+        }
+
+        .navbar {
+            background-color: #333;
+            color: #fff;
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo-bar {
+            display: flex;
+            align-items: center;
+        }
+
+        .container {
+            width: 80%;
+            margin: 0 auto;
+        }
+
+        .logo {
+            width: 120px;
+            text-align: center;
+        }
+
+        .logo img {
+            width: 100%;
+            height: auto;
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="navbar">
+        <div class="logo-bar">
+            <div class="logo">
+                <img src="hack_logo.JPEG" alt="Logo">
+            </div>
+        </div>
+    </nav>
+    <div class="container">
+        <h1 id="Message" style="padding:20px;"></h1>
+        <div class="container" id="container"></div>
+    </div>
+
+    <label for="customernegotiateprice">Your offered price:</label>
+    <input type="number" id="customernegotiateprice" name="customernegotiateprice" required>
+
+    <label for="pid">Product ID:</label>
+    <input type="number" id="pid" name="pid" required>
+
+    <button onclick="makeAnOffer()"
+        style="padding: 10px; background-color: #4CAF50; color: #fff; border: none; border-radius: 3px; cursor: pointer; margin-top: 50px;">Make an Offer</button>
+
+    <button onclick="removeFromNegotiation()"
+        style="padding: 10px; background-color: #4CAF50; color: #fff; border: none; border-radius: 3px; cursor: pointer; margin-top: 50px;">Remove from Negotiation</button>
+
+    <button onclick="window.location.href = 'customerhomepage.html';"
+        style="padding: 10px; background-color: #4CAF50; color: #fff; border: none; border-radius: 3px; cursor: pointer; margin-top: 50px;">Continue Shopping</button>
+
+    <script type="text/javascript">
+        // Your existing JavaScript code
+        document.addEventListener("DOMContentLoaded", function () {
+            // Fetch negotiation data and update the container
+            $.ajax({
+                url: 'negotiate.php',
+                method: 'GET',
+                dataType: 'json',
+                success: function (data) {
+                    displayNegotiation(data);
+                },
+                error: function (error) {
+                    console.error('Error fetching negotiation data:', error);
+                }
+            });
+
+            function displayNegotiation(negotiationData) {
+                var container = document.getElementById('container');
+                var html = '';
+
+                if (negotiationData.length > 0) {
+                    html += '<table border="1" id="negotiation">';
+                    html += '<caption style="font-weight: bold; font-size: 60px;">Negotiation</caption>';
+                    html += '<tr><th>Product ID</th><th>Product Name</th><th>Quantity</th><th>Price</th><th>Image</th></tr>';
+
+                    negotiationData.forEach(function (item) {
+                        html += '<tr>';
+                        html += '<td>' + item.pid + '</td>';
+                        html += '<td>' + item.productname + '</td>';
+                        html += '<td>' + item.productquantity + '</td>';
+                        html += '<td>' + item.productprice + '</td>';
+                        html += '<td><img src="' + item.productlink + '" alt="' + item.productname +
+                            '" style="width: 50px; height: auto;"></td>';
+                        html += '</tr>';
+                    });
+
+                    html += '</table>';
+                } else {
+                    html = '<p>No items in negotiation.</p>';
+                }
+
+                container.innerHTML = html;
+            }
+        });
+
+        function makeAnOffer() {
+            var pid = document.getElementById('pid').value;
+            var customernegotiateprice = document.getElementById('customernegotiateprice').value;
+            $.ajax({
+                url: 'makeanoffer.php',
+                method: 'POST',
+                dataType: 'json',
+                data: {
+                    pid: pid,
+                    customernegotiateprice : customernegotiateprice
+                },
+                success: function (response) {
+                    // Refresh the negotiation data after making an offer
+                    $.ajax({
+                        url: 'negotiate.php',
+                        method: 'GET',
+                        dataType: 'json',
+                        success: function (data) {
+                            displayNegotiation(data);
+                        },
+                        error: function (error) {
+                            console.error('Error fetching updated negotiation data:', error);
+                        }
+                    });
+                    alert(response.message);
+                },
+                error: function (error) {
+                    console.error('Error:', error);
+                }
+            });
+        }
+
+        function removeFromNegotiation() {
+            var pid = document.getElementById('pid').value;
+            $.ajax({
+                url: 'removefromnegotiation.php',
+                method: 'POST',
+                dataType: 'json',
+                data: {
+                    pid: pid
+                },
+                success: function (response) {
+                    // Refresh the negotiation data after removing from negotiation
+                    $.ajax({
+                        url: 'negotiate.php',
+                        method: 'GET',
+                        dataType: 'json',
+                        success: function (data) {
+                            displayNegotiation(data);
+                        },
+                        error: function (error) {
+                            console.error('Error fetching updated negotiation data:', error);
+                        }
+                    });
+                    alert(response.message);
+                },
+                error: function (error) {
+                    console.error('Error:', error);
+                }
+            });
+        }
+    </script>
+</body>
+
+</html>
